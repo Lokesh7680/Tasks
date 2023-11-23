@@ -1,0 +1,53 @@
+PySimpleGUI
+
+-->>First we need to import PySimpleGUI
+
+import PySimpleGUI as ps
+
+-->>to popup we need to use
+
+ps.popup("Hello")
+
+
+we also have 
+	popup_ok:ok will be displayed
+	popup_cancel:cancelled will be displayed
+	     popup_ok_cancel:ok and cancel will be displayed
+	     pop_yes_no:yes and no will be displayed
+	     popup_auto_close:it will automatically closed
+	     popup_timed("msg",auto_close_duration=3)
+	popup_error:throws an error popup
+	popup_no_border:displays popup without border
+ 	popup_no_Buttons:displays without buttons
+	popup_no_frame:without frame
+	popoup_scrolled:
+	popup_get _date:displays the calender
+	popup_get_file("choose a file):we can choose a file
+	popup_get_folder("choose a folder"):we can choose a folder
+	popup_get_text("Hi"):
+`	popup_get_text("Enter your password",password_char='*'):hides the entered text
+	popup('hello',grab_anywhere=True)
+	
+--------------------
+
+BUTTONS AND MENU ELEMENTS
+
+-->>import PySimpleGUI as ps
+
+menu=[["Menu"],"file","edit","save"]
+
+layout=[[ps.ButtonMenu("Menu",menu)],
+	[ps.B("A")],
+	[ps.B("B",size=(10,10)]
+
+window=ps.Window("Alphabets",layout)
+a,b=window.read()
+print(a,b)
+
+
+--------------------
+
+CHECKBOX AND DROPDOWN
+
+
+	     

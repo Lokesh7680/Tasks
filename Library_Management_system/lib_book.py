@@ -10,4 +10,5 @@ class Book:
         print(f"Book ID: {self.book_id}")
         print(f"Title: {self.title}")
         print(f"Author: {self.author}")
+        print(f"Genre : {self.genre}")
         print(f"Available: {'Yes' if self.available else 'No'}")

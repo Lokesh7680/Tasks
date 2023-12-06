@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>All Users</title>
+</head>
+<body>
+    <h1>All Users in the Library</h1>
+
+    <ol>
+        {% for user in users %}
+            <li>{{ user }}</li>
+        {% endfor %}
+    </ol>
+</body>
+</html>

@@ -1,0 +1,112 @@
+TASK 
+
+Build a scalable batch data processing pipeline using Hadoop ecosystem tools - Hadoop, Spark, Hive, and ZooKeeper. 
+ 
+● Start Hadoop using the command:  
+
+start-all.sh  
+
+● Create a directory in hadoop and store the dataset in the directory using the following commands 
+
+hdfs dfs –copyFromLocal /home/kali/ds/customer.csv /customer.csv 
+
+1. Import necessary libraries: 
+
+from pyspark.sql import SparkSession 
+from pyspark.sql.functions import col 
+ 
+Import SparkSession: This is the entry point for interacting with Spark. 
+
+Import col: This function allows referencing columns in DataFrames. 
+
+2. Create a SparkSession: 
+
+spark = SparkSession.builder.appName('task').getOrCreate() 
+ 
+
+Creates a SparkSession object: This manages resources and coordinates Spark operations. 
+
+appName('task'): Assigns a name to the Spark application. 
+
+getOrCreate(): Retrieves an existing session or creates a new one. 
+
+3. Read CSV data into a DataFrame: 
+
+raw_customers_df = spark.read.csv("/customers.csv", header=True, inferSchema=True) 
+ 
+
+Reads a CSV file: Loads the customers.csv file into a DataFrame. 
+
+header=True: Indicates the first row contains column names. 
+
+inferSchema=True: Automatically infers data types for columns. 
+
+4. Remove rows with missing values: 
+
+clean_customers_df = raw_customers_df.dropna() 
+ 
+
+Drops rows with null values: Eliminates rows containing missing data. 
+
+5. Rename specific columns: 
+
+columns_to_rename = {"Customer Id":"Customer_Id","First Name":"First_Name","Last Name":"Last_Name","Phone 1":"Phone_1","Phone 2":"Phone_2"} 
+
+ 
+new_clean_customers_df = clean_customers_df 
+
+
+for old,new in columns_to_rename.items(): 
+    new_clean_customers_df = new_clean_customers_df.withColumnRenamed(old,new) 
+ 
+
+Defines a dictionary for renaming: Maps old column names to new ones. 
+
+Iterates through the dictionary: Renames columns in the DataFrame. 
+
+6. Filter by subscription date: 
+
+start_date = "2020-10-05" 
+end_date = "2022-02-19" 
+customers_df = new_clean_customers_df.filter(col("Subscription Date") >= start_date) 
+ 
+
+Sets start and end dates for filtering: Specifies the date range. 
+
+Filters the DataFrame: Selects rows where "Subscription Date" is after or equal to the start date. 
+
+ 
+7. Write DataFrame to Parquet: 
+
+customers_df.write.parquet("hdfs://localhost:9000/user/hive/warehouse/customer") 
+ 
+
+Saves DataFrame as Parquet: Stores the filtered DataFrame in Parquet format for efficient storage and query performance. 
+
+----------------HIVE----------------------
+
+8. Create Hive table: 
+
+CREATE TABLE IF NOT EXISTS customers_parquet ( 
+    Index integer, 
+    Customer_Id string, 
+    First_Name STRING, 
+    Last_Name STRING, 
+    Company string, 
+    City string, 
+    Country string, 
+    Phone_1 STRING, 
+    Phone_2 STRING, 
+    Email string, 
+    Subscription_Date timestamp,  
+    Website string  
+); 
+ 
+
+Load the processed data into table: 
+
+ 
+load data inpath '/user/hive/warehouse/customer' into table customers_parquet; 
+
+ 
+ 
